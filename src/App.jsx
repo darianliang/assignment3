@@ -34,7 +34,7 @@ function ProfileCard({ profile }) {
 }
 
 function App() {
-  const [count, setCount] = useState(0)
+  
   const PROFILES = [
     { id: 1, name: "Mark Grayson", initials: "MG", genresLabel: "Indie, Rock" },
     { id: 2, name: "Peter Parker", initials: "PP", genresLabel: "Pop, R&B" },
@@ -43,6 +43,26 @@ function App() {
     { id: 5, name: "Steve Jobs", initials: "SJ", genresLabel: "Rock, Indie" },
     { id: 6, name: "Larry Ling", initials: "LL", genresLabel: "Hip-hop, Pop" }
   ];
+  const GENRES = [
+    { label: "Hip-hop", value: "hiphop" },
+    { label: "R&B", value: "rnb" },
+    { label: "Pop", value: "pop" },
+    { label: "Rock", value: "rock" },
+    { label: "Indie", value: "indie" },
+    { label: "Jazz", value: "jazz" },
+    { label: "Classical", value: "classical" },
+    { label: "Electronic", value: "electronic" }
+  ]
+  const [selectedGenres, setSelectedGenres] = useState([]);
+
+  function toggleGenre(genreValue) {
+    setSelectedGenres(prevSelected => {
+      if (prevSelected.includes(genreValue)) {
+        return prevSelected.filter(g => g !== genreValue);
+      }
+      return [...prevSelected, genreValue];
+    });
+  }
 
   return (
     <>
@@ -59,6 +79,30 @@ function App() {
           <p className="subhead">
             Pick genres you like. We’ll show profiles with similar preferences.
           </p>
+          <section className="panel" aria-labelledby='genres-title'>
+            <h2 id="genres-title">Select Genres</h2>
+            <fieldset className="genre-filters">
+              <div className="filters-grid">
+                {GENRES.map((genre) => {
+                  const id = `genre-${genre.value}`;
+                  return (
+                    <label className="check" key={genre.value} htmlFor={id}>
+                      <input
+                        type="checkbox"
+                        id={id}
+                        name="genres"
+                        checked={selectedGenres.includes(genre.value)}
+                        onChange={() => toggleGenre(genre.value)}
+                      />
+                      <span>{genre.label}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+
+            
+          </section>
         </header>
 
         <h2>Profiles</h2>

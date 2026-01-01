@@ -97,3 +97,36 @@ input:focus-visible {
   margin: 0.25rem 0 0;
   color: #555;
 }
+.panel {
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: left;
+  margin: 1rem 0;
+}
+
+.fieldset {
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.5rem;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  border-radius: 0.6rem;
+}
+
+.small {
+  color: #555;
+  font-size: 0.95rem;
+}
