@@ -3,11 +3,30 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+function NavBar() {
+  return (
+    <header className="site-header">
+      <nav className="nav" aria-label="Primary navigation">
+        <a className="brand-link" href="#">
+          MusicConnect
+        </a>
+        <ul className="nav-links">
+          <li><a href="#explore">Explore</a></li>
+          <li><a href="#saved">Saved</a></li>
+          <li><a href="#profile">Profile</a></li>
+        </ul>
+        <a className="nav-cta" href="#signin">Sign In</a>
+      </nav>
+    </header>
+  );
+}
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      <NavBar />
       <header className="site-header">
         <div className="container">
           <p className="brand">MusicConnect</p>
