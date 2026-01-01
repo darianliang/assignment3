@@ -31,3 +31,38 @@ input:focus-visible {
   color: #555;
   margin-top: 0.25rem;
 }
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand-link {
+  font-weight: 800;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: inherit;
+  padding: 0.25rem 0.5rem;
+}
+
+.nav-cta {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #ddd;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+}
