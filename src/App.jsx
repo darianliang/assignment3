@@ -21,15 +21,27 @@ function NavBar() {
   );
 }
 
+function ProfileCard({ profile }) {
+  return (
+    <li className="card">
+      <article>
+        <p className="avatar" aria-hidden="true">{profile.initials}</p>
+        <h3>{profile.name}</h3>
+        <p className="meta">Genres: {profile.genresLabel}</p>
+      </article>
+    </li>
+  );
+}
+
 function App() {
   const [count, setCount] = useState(0)
   const PROFILES = [
-    { id: 1, name: "Mark Grayson" },
-    { id: 2, name: "Peter Parker" },
-    { id: 3, name: "Jason Nguyen" },
-    { id: 4, name: "Hannah Lam" },
-    { id: 5, name: "Steve Jobs" },
-    { id: 6, name: "Larry Ling" }
+    { id: 1, name: "Mark Grayson", initials: "MG", genresLabel: "Indie, Rock" },
+    { id: 2, name: "Peter Parker", initials: "PP", genresLabel: "Pop, R&B" },
+    { id: 3, name: "Jason Nguyen", initials: "JN", genresLabel: "R&B, Pop" },
+    { id: 4, name: "Hannah Lam", initials: "HL", genresLabel: "Jazz, Classical" },
+    { id: 5, name: "Steve Jobs", initials: "SJ", genresLabel: "Rock, Indie" },
+    { id: 6, name: "Larry Ling", initials: "LL", genresLabel: "Hip-hop, Pop" }
   ];
 
   return (
@@ -50,9 +62,9 @@ function App() {
         </header>
 
         <h2>Profiles</h2>
-        <ul>
+        <ul className="profile-grid">
           {PROFILES.map(profile => (
-            <li key={profile.id}>{profile.name}</li>
+            <ProfileCard key={profile.id} profile={profile} />
           ))}
         </ul>
       </main>
