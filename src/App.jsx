@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -21,17 +21,30 @@ function NavBar() {
   );
 }
 
-function ProfileCard({ profile }) {
+function ProfileCard({ profile, isSaved, onToggleSave }) {
   return (
     <li className="card">
       <article>
-        <p className="avatar" aria-hidden="true">{profile.initials}</p>
+        <p className="avatar" aria-hidden="true">
+          {profile.initials}
+        </p>
         <h3>{profile.name}</h3>
         <p className="meta">Genres: {profile.genresLabel}</p>
+
+        <button
+          type="button"
+          className="save-btn"
+          aria-pressed={isSaved}
+          aria-label={`${isSaved ? "Unsave" : "Save"} ${profile.name}`}
+          onClick={() => onToggleSave(profile.id)}
+        >
+          {isSaved ? "Saved" : "Save"}
+        </button>
       </article>
     </li>
   );
 }
+
 
 function App() {
   
@@ -54,6 +67,13 @@ function App() {
     { label: "Electronic", value: "electronic" }
   ]
   const [selectedGenres, setSelectedGenres] = useState([]);
+  useEffect(() => {
+    console.log("Selected genres:", selectedGenres);
+  }, [selectedGenres]);
+  
+  function toggleSave(id) {
+    setSavedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  }
 
   function toggleGenre(genreValue) {
     setSelectedGenres(prevSelected => {
@@ -67,11 +87,6 @@ function App() {
   return (
     <>
       <NavBar />
-      <header className="site-header">
-        <div className="container">
-          <p className="brand">MusicConnect</p>
-        </div>
-      </header>
 
       <main id="main" className="container" tabIndex={-1}>
         <header className="page-header">
