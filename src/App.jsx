@@ -8,34 +8,28 @@ function App() {
 
   return (
     <>
-      <header className="site-header">
-        <div className="container">
-          <p className="brand">MusicConnect</p>
-        </div>
-      </header>
-
-      <main id="main" className="container" tabIndex={-1}>
-        <header className="page-header">
-          <h1>Match through music</h1>
-          <p className="subhead">
-            Pick genres you like. We’ll show profiles with similar preferences.
-          </p>
-        </header>
-
-        <section className="panel">
-          <h2>Explore Page</h2>
-          <p>Explore page with filters and profile grid</p>
-        </section>
-      </main>
-
-      <footer className="site-footer">
-        <div className="container">
-          <p>MusicConnect — match by genre.</p>
-        </div>
-      </footer>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
     </>
-  );
+  )
 }
 
 export default App
-
