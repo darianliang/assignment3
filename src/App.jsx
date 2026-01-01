@@ -23,6 +23,14 @@ function NavBar() {
 
 function App() {
   const [count, setCount] = useState(0)
+  const PROFILES = [
+    { id: 1, name: "Mark Grayson" },
+    { id: 2, name: "Peter Parker" },
+    { id: 3, name: "Jason Nguyen" },
+    { id: 4, name: "Hannah Lam" },
+    { id: 5, name: "Steve Jobs" },
+    { id: 6, name: "Larry Ling" }
+  ];
 
   return (
     <>
@@ -41,10 +49,12 @@ function App() {
           </p>
         </header>
 
-        <section className="panel">
-          <h2>Explore Page</h2>
-          <p>Explore page with filters and profile grid</p>
-        </section>
+        <h2>Profiles</h2>
+        <ul>
+          {PROFILES.map(profile => (
+            <li key={profile.id}>{profile.name}</li>
+          ))}
+        </ul>
       </main>
 
       <footer className="site-footer">
