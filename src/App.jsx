@@ -102,22 +102,13 @@ function ExplorePage() {
 
 function UsersPage() {
   const [users, setUsers] = useState([]);
-  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     async function loadUsers() {
-      try {
-        const res = await fetch(
-          "https://disc-assignment-5-users-api-iyct.onrender.com/api/users"
-        );
+        const res = await fetch("http://localhost:3001/users");
         const data = await res.json();
         setUsers(data);
-        setStatus("success");
-      } catch (err) {
-        console.error(err);
-        setStatus("error");
       }
-    }
 
     loadUsers();
   }, []);
@@ -126,21 +117,13 @@ function UsersPage() {
     <main className="container">
       <h1>Users</h1>
 
-      {status === "loading" && <p>Loading users…</p>}
-      {status === "error" && <p>Something went wrong fetching users.</p>}
-
-      {status === "success" && (
-        <>
-          <p>Loaded {users.length} users.</p>
-          <ul>
-            {users.map((u) => (
-              <li key={u.id}>
-                {u.firstName} {u.lastName}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            {user.first_name} {user.last_name} ({user.email})
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
