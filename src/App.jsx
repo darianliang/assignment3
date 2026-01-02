@@ -1,53 +1,29 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { Link, Route, Routes } from 'react-router-dom';
 import './App.css'
 
 function NavBar() {
   return (
     <header className="site-header">
       <nav className="nav" aria-label="Primary navigation">
-        <a className="brand-link" href="#">
+        <Link className="brand-link" to="/">
           MusicConnect
-        </a>
+        </Link>
+
         <ul className="nav-links">
-          <li><a href="#explore">Explore</a></li>
-          <li><a href="#saved">Saved</a></li>
-          <li><a href="#profile">Profile</a></li>
+          <li><Link to="/">Explore</Link></li>
+          <li><Link to="/users">Users</Link></li>
         </ul>
+
         <a className="nav-cta" href="#signin">Sign In</a>
       </nav>
     </header>
   );
 }
 
-function ProfileCard({ profile, isSaved, onToggleSave }) {
-  return (
-    <li className="card">
-      <article>
-        <p className="avatar" aria-hidden="true">
-          {profile.initials}
-        </p>
-        <h3>{profile.name}</h3>
-        <p className="meta">Genres: {profile.genresLabel}</p>
-
-        <button
-          type="button"
-          className="save-btn"
-          aria-pressed={isSaved}
-          aria-label={`${isSaved ? "Unsave" : "Save"} ${profile.name}`}
-          onClick={() => onToggleSave(profile.id)}
-        >
-          {isSaved ? "Saved" : "Save"}
-        </button>
-      </article>
-    </li>
-  );
-}
-
-
-function App() {
-  
+function ExplorePage() {
   const PROFILES = [
     { id: 1, name: "Mark Grayson", initials: "MG", genresLabel: "Indie, Rock" },
     { id: 2, name: "Peter Parker", initials: "PP", genresLabel: "Pop, R&B" },
@@ -56,6 +32,7 @@ function App() {
     { id: 5, name: "Steve Jobs", initials: "SJ", genresLabel: "Rock, Indie" },
     { id: 6, name: "Larry Ling", initials: "LL", genresLabel: "Hip-hop, Pop" }
   ];
+
   const GENRES = [
     { label: "Hip-hop", value: "hiphop" },
     { label: "R&B", value: "rnb" },
@@ -65,68 +42,137 @@ function App() {
     { label: "Jazz", value: "jazz" },
     { label: "Classical", value: "classical" },
     { label: "Electronic", value: "electronic" }
-  ]
+  ];
+
   const [selectedGenres, setSelectedGenres] = useState([]);
+
   useEffect(() => {
     console.log("Selected genres:", selectedGenres);
   }, [selectedGenres]);
-  
-  function toggleSave(id) {
-    setSavedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
-  }
 
   function toggleGenre(genreValue) {
-    setSelectedGenres(prevSelected => {
-      if (prevSelected.includes(genreValue)) {
-        return prevSelected.filter(g => g !== genreValue);
-      }
-      return [...prevSelected, genreValue];
-    });
+    setSelectedGenres((prevSelected) =>
+      prevSelected.includes(genreValue)
+        ? prevSelected.filter((g) => g !== genreValue)
+        : [...prevSelected, genreValue]
+    );
   }
 
+  return (
+    <main id="main" className="container" tabIndex={-1}>
+      <header className="page-header">
+        <h1>Match through music</h1>
+        <p className="subhead">
+          Pick genres you like. We’ll show profiles with similar preferences.
+        </p>
+
+        <section className="panel" aria-labelledby="genres-title">
+          <h2 id="genres-title">Select Genres</h2>
+          <fieldset className="genre-filters">
+            <div className="filters-grid">
+              {GENRES.map((genre) => {
+                const id = `genre-${genre.value}`;
+                return (
+                  <label className="check" key={genre.value} htmlFor={id}>
+                    <input
+                      type="checkbox"
+                      id={id}
+                      name="genres"
+                      checked={selectedGenres.includes(genre.value)}
+                      onChange={() => toggleGenre(genre.value)}
+                    />
+                    <span>{genre.label}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        </section>
+      </header>
+
+      <h2>Profiles</h2>
+      <ul className="profile-grid">
+        {PROFILES.map((profile) => (
+          <ProfileCard key={profile.id} profile={profile} />
+        ))}
+      </ul>
+    </main>
+  );
+}
+
+function UsersPage() {
+  const [users, setUsers] = useState([]);
+  const [status, setStatus] = useState("loading");
+
+  useEffect(() => {
+    async function loadUsers() {
+      try {
+        const res = await fetch(
+          "https://disc-assignment-5-users-api-iyct.onrender.com/api/users"
+        );
+        const data = await res.json();
+        setUsers(data);
+        setStatus("success");
+      } catch (err) {
+        console.error(err);
+        setStatus("error");
+      }
+    }
+
+    loadUsers();
+  }, []);
+
+  return (
+    <main className="container">
+      <h1>Users</h1>
+
+      {status === "loading" && <p>Loading users…</p>}
+      {status === "error" && <p>Something went wrong fetching users.</p>}
+
+      {status === "success" && (
+        <>
+          <p>Loaded {users.length} users.</p>
+          <ul>
+            {users.map((u) => (
+              <li key={u.id}>
+                {u.firstName} {u.lastName}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </main>
+  );
+}
+
+
+
+
+function ProfileCard({ profile }) {
+  return (
+    <li className="card">
+      <article>
+        <p className="avatar" aria-hidden="true">
+          {profile.initials}
+        </p>
+        <h3>{profile.name}</h3>
+        <p className="meta">Genres: {profile.genresLabel}</p>
+      </article>
+    </li>
+  );
+}
+
+
+
+function App() {
   return (
     <>
       <NavBar />
 
-      <main id="main" className="container" tabIndex={-1}>
-        <header className="page-header">
-          <h1>Match through music</h1>
-          <p className="subhead">
-            Pick genres you like. We’ll show profiles with similar preferences.
-          </p>
-          <section className="panel" aria-labelledby='genres-title'>
-            <h2 id="genres-title">Select Genres</h2>
-            <fieldset className="genre-filters">
-              <div className="filters-grid">
-                {GENRES.map((genre) => {
-                  const id = `genre-${genre.value}`;
-                  return (
-                    <label className="check" key={genre.value} htmlFor={id}>
-                      <input
-                        type="checkbox"
-                        id={id}
-                        name="genres"
-                        checked={selectedGenres.includes(genre.value)}
-                        onChange={() => toggleGenre(genre.value)}
-                      />
-                      <span>{genre.label}</span>
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-
-            
-          </section>
-        </header>
-
-        <h2>Profiles</h2>
-        <ul className="profile-grid">
-          {PROFILES.map(profile => (
-            <ProfileCard key={profile.id} profile={profile} />
-          ))}
-        </ul>
-      </main>
+      <Routes>
+        <Route path="/" element={<ExplorePage />} />
+        <Route path="/users" element={<UsersPage />} />
+      </Routes>
 
       <footer className="site-footer">
         <div className="container">
@@ -136,5 +182,6 @@ function App() {
     </>
   );
 }
+
 
 export default App
